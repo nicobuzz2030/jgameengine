@@ -1,40 +1,30 @@
 package jgameengine;
 
+//update
+//demo object
 class cube extends object {
     cube(double xpos, double ypos, double zpos) {
-        this.mPosition.mat.xarr = xpos;
-        this.mPosition.mat.yarr = ypos;
-        this.mPosition.mat.zarr = zpos;
-        this.scale = 2.5f;
-        this.updatePos();
-        //vertices                                //second element will always be three
-        this.vertices = new vector[8];
-        //collision:
-        //triangle mesh
-        //I made formula for meshes
-        //you can do whatever you want
-        for(int i = 0; i < trimesh.length; i++) {
-        	trimesh[i].setup(vertices, this, this.cvType);
-        }
+        super(xpos, ypos, zpos, 1.0, 8);
     }
     
-    //amount of sides
-    int sides = 6;
-    tri[] trimesh = new tri[(this.sides * 2)];
-    
-    public void changeCV(int cvType) {
-    	super.changeCV(cvType);
-    	for(int i = 0; i < trimesh.length; i++) {
-    		trimesh[i].changeCV(this.cvType);
-    	}
-    }
-    
-    @Override
-    public double[] updatePos() {
-        double[] ret = new double[3];
-        for(int i = 0; i < trimesh.length; i++) 
-        	trimesh[i].coll.update();
-        this.mPosition.mat.magnitude = calcMagnitude(this.mPosition.mat.xarr, this.mPosition.mat.yarr, this.mPosition.mat.zarr);
-        return ret;
+    public void updatePos() {
+    		mat.change(this.scale, 0.0, 0.0);
+    		vertices[1].mat = addMat(vertices[0].mat, mat);
+    		mat.change(0.0, this.scale, 0.0);
+    		vertices[2].mat = addMat(vertices[0].mat, mat);
+    		mat.change(0.0, 0.0, this.scale);
+    		vertices[3].mat = addMat(vertices[0].mat, mat);
+    		mat.change(this.scale, 0.0, this.scale);
+    		vertices[4].mat = addMat(vertices[0].mat, mat);
+    		mat.change(this.scale, this.scale, 0.0);
+    		vertices[5].mat = addMat(vertices[0].mat, mat);
+    		mat.change(0.0, this.scale, this.scale);
+    		vertices[6].mat = addMat(vertices[0].mat, mat);
+    		mat.change(this.scale, this.scale, this.scale);
+    		vertices[7].mat = addMat(vertices[0].mat, mat);
+    		for(int i = 0; i < vertices.length; i++) {
+    			vertices[i].mat.magnitude = calcMagnitude(vertices[i].mat);
+    		}
+        //coll.update();
     }
 }
